@@ -203,7 +203,7 @@ FORM_FLOW = [
     {
         'step': 14,
         'question': 'Richtprijsberekening  please press next',
-        'type': 'calculation',  # Custom logic for costs/discounts
+        'type': 'calculation',  # Custom loic for costs/discounts
         'logic': {
             'staffelkorting': [
                 {'threshold': 50, 'discount': '5%'},
@@ -603,6 +603,7 @@ def send_quote_to_client(quote_data):
             server.send_message(msg)
         
         print("Quote email sent successfully to client")
+        return render_template('success.html')
     except Exception as e:
         print(f"Error sending quote to client: {str(e)}")
 

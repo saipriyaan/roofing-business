@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Succes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+        /* Green tick animation */
+        @keyframes tickAnimation {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .tick {
+            font-size: 50px;
+            color: green;
+            animation: tickAnimation 1s ease-in-out;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ...existing header code... -->
+    <div class="tick">&#10003;</div>
+    <h1>Bedankt!</h1>
+    <p>Wij hebben uw gegevens ontvangen, u wordt spoedig gecontacteerd.</p>
+    <a class="cta-button" href="/">Naar de homepagina</a>
+    <!-- ...existing footer code... -->
+</body>
+</html>
