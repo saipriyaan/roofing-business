@@ -1,8 +1,10 @@
-Flask
-pymongo
-pydrive2
-google-auth
-google-auth-oauthlib
-google-auth-httplib2
-requests
+Flask==2.3.2
+pymongo==4.3.3
+python-dotenv==1.0.0
+Werkzeug==2.3.7
+reportlab==4.0.4
 
+
+
+
+email-validator==2.0.0.post2
