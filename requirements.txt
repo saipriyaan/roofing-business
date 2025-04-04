@@ -1,0 +1,9 @@
+Flask
+pymongo
+pydrive2
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+requests
+smtplib
+email

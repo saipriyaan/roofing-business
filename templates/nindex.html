@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offerte Calculator</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --info: #560bad;
+            --gradient-start: #3a0ca3;
+            --gradient-end: #7209b7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        h1, h2, h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            height: 12px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .step-indicator {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.25);
+        }
+        
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .radio-option input,
+        .checkbox-option input {
+            width: auto;
+        }
+        
+        .radio-option label,
+        .checkbox-option label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn-group .btn {
+            flex: 1;
+        }
+        
+        .uploaded-files {
+            margin-top: 1rem;
+        }
+        
+        .uploaded-files ul {
+            list-style-type: none;
+            margin-top: 0.5rem;
+        }
+        
+        .uploaded-files li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .uploaded-files .file-icon {
+            color: var(--accent);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if show_admin_login %}
+            <!-- Admin login form would go here -->
+        {% elif show_admin_dashboard %}
+            <!-- Admin dashboard would go here -->
+        {% elif show_quote %}
+            <!-- Quote display would go here -->
+        {% else %}
+            <h1>Offerte Calculator</h1>
+            <div class="card">
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {{ ((step|int) / (total_steps|int) * 100) }}%"></div>
+                </div>
+              
+                
+                <form method="POST" action="{{ url_for('form_step', step=step) }}" enctype="multipart/form-data">
+                    <h2>{{ question.question }}</h2>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    {% if question.type == 'input' %}
+                    <div class="form-group">
+                        <input type="{% if question.question == 'Hoeveel m² betreft het?' %}number{% else %}text{% endif %}" 
+                               name="{{ question.question|replace(' ', '_')|lower }}" 
+                               value="{% if question.question == 'Hoeveel m² betreft het?' %}0{% else %}{{ form_data.get(question.question|replace(' ', '_')|lower, '') }}{% endif %}"
+                               {% if question.question == 'Hoeveel m² betreft het?' %}min="0" step="0.01" required{% endif %}>
+                    </div>
+                    
+                    {% elif question.type == 'input-group' %}
+                        {% for field in question.fields %}
+                            <div class="form-group">
+                                <label>{{ field }}</label>
+                                <input type="{% if field == 'E-mailadres' %}email{% elif field == 'Telefoonnummer' %}tel{% else %}text{% endif %}" 
+                                       name="{{ field }}" 
+                                       value="{{ form_data.get(field, '') }}"
+                                       required>
+                            </div>
+                        {% endfor %}
+                    
+                    {% elif question.type == 'single' %}
+                        <div class="form-group">
+                            <div class="radio-group">
+                                {% for option in question.options %}
+                                    <div class="radio-option">
+                                        <input type="radio" 
+                                               id="{{ question.question|replace(' ', '_')|lower }}_{{ loop.index }}" 
+                                               name="{{ question.question|replace(' ', '_')|lower }}" 
+                                               value="{{ option }}" 
+                                               {% if form_data.get(question.question|replace(' ', '_')|lower, '') == option %}checked{% endif %}>
+                                        <label for="{{ question.question|replace(' ', '_')|lower }}_{{ loop.index }}">{{ option }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    
+                    {% elif question.type == 'multi' %}
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                {% for option in question.options %}
+                                    <div class="checkbox-option">
+                                        <input type="checkbox" 
+                                               id="{{ question.question|replace(' ', '_')|lower }}_{{ loop.index }}" 
+                                               name="{{ question.question|replace(' ', '_')|lower }}" 
+                                               value="{{ option }}" 
+                                               {% if option in form_data.get(question.question|replace(' ', '_')|lower, []) %}checked{% endif %}>
+                                        <label for="{{ question.question|replace(' ', '_')|lower }}_{{ loop.index }}">{{ option }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    
+                    {% elif question.type == 'textarea' %}
+                        <div class="form-group">
+                            <textarea name="{{ question.question|replace(' ', '_')|lower }}" rows="4">{{ form_data.get(question.question|replace(' ', '_')|lower, '') }}</textarea>
+                        </div>
+                    
+                    {% elif question.type == 'upload' %}
+                        <div class="form-group">
+                            <input type="file" name="file" multiple>
+                            {% if form_data.get('uploaded_files') %}
+                                <div class="uploaded-files">
+                                    <p>Geüploade bestanden:</p>
+                                    <ul>
+                                        {% for file in form_data.get('uploaded_files') %}
+                                            <li>
+                                                <span class="file-icon">✓</span>
+                                                {{ file.name }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="btn-group">
+                        {% if step > 1 %}
+                            <a href="{{ url_for('form_step', step=step-1) }}" class="btn btn-secondary">Vorige</a>
+                        {% else %}
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">Begin opnieuw</a>
+                        {% endif %}
+                        
+                        <button type="submit" class="btn">
+                            {% if step == total_steps %}Verzenden{% else %}Volgende{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

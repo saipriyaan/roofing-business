@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dormer Quote Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --primary-dark: #564FC9;
+            --secondary: #FF6584;
+            --success: #4CC9F0;
+            --danger: #F72585;
+            --warning: #F8961E;
+            --light: #F8F9FA;
+            --dark: #212529;
+            --gray: #8E8EA9;
+            --light-gray: #E9ECEF;
+            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .progress-container {
+            padding: 2rem 2rem 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 0%;
+            border-radius: 5px;
+            transition: width 0.6s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-step {
+            padding: 0 2rem 2rem;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .form-step.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .step-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .step-header p {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.2);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(108, 99, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(108, 99, 255, 0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            gap: 1rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .option-card {
+            border: 2px solid var(--light-gray);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-shadow);
+            transform: translateY(-5px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+        }
+
+        .option-image {
+            width: 100%;
+            height: 160px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .option-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-price {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-control.error {
+            border-color: var(--danger);
+        }
+
+        .floating-save {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(108, 99, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .floating-save.saved {
+            background-color: var(--success);
+            box-shadow: 0 10px 25px rgba(76, 201, 240, 0.3);
+        }
+
+        .success-container {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .success-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-container p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .form-container {
+                margin: 1rem auto;
+            }
+            
+            .progress-container {
+                padding: 1rem 1rem 0;
+            }
+            
+            .form-step {
+                padding: 0 1rem 1rem;
+            }
+            
+            .step-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                flex-direction: column-reverse;
+                margin-top: 2rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Progress</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+            </div>
+            
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="step-1">
+                <div class="step-header">
+                    <h2>Let's Get Started</h2>
+                    <p>Please provide your basic information so we can personalize your quote</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="John Doe">
+                    <div class="error-message" id="name-error">Please enter your name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="your@email.com">
+                    <div class="error-message" id="email-error">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="+31 6 12345678">
+                </div>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline" disabled>
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn" onclick="nextStep(1)">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Project Type -->
+            <div class="form-step" id="step-2">
+                <div class="step-header">
+                    <h2>Project Details</h2>
+                    <p>What type of work would you like us to perform?</p>
+                </div>
+                
+                <div class="option-grid">
+                    <div class="option-card" onclick="selectOption(this, 'project_type', 'new')">
+                        <img src="/static/images/new-roof.jpg" alt="New Roof" class="option-image">
+                        <div class="option-content">
+                            <div class="option-title">New Roof</div>
+                            <div class="option-description">Complete new roof installation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" onclick="selectOption(this, 'project_type', 'renovation')">
+                        <img src="/static/images/renovation.jpg" alt="Renovation" class="option-image">
+                        <div class="option-content">
+                            <div class="option-title">Roof Renovation</div>
+                            <div class="option-description">Upgrade or repair existing roof</div>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" onclick="selectOption(this, 'project_type', 'repair')">
+                        <img src="/static/images/repair.jpg" alt="Repair" class="option-image">
+                        <div class="option-content">
+                            <div class="option-title">Repair</div>
+                            <div class="option-description">Fix specific issues or damage</div>
+                        </div>
+                    </div>
+                    
+                    <div class="option-card" onclick="selectOption(this, 'project_type', 'inspection')">
+                        <img src="/static/images/inspection.jpg" alt="Inspection" class="option-image">
+                        <div class="option-content">
+                            <div class="option-title">Inspection</div>
+                            <div class="option-description">Professional roof assessment</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-message" id="project-type-error" style="text-align: center; display: none;">
+                    Please select a project type
+                </div>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline" onclick="prevStep(2)">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn" onclick="nextStep(2)">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Additional steps would follow the same pattern -->
+            
+            <!-- Final Step: Success -->
+            <div class="form-step" id="step-success">
+                <div class="success-container">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Quote Generated Successfully!</h2>
+                    <p>Your custom dormer quote has been generated and sent to your email.</p>
+                    <p>You can also download it now or review it online.</p>
+                    
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                        <button type="button" class="btn" id="download-quote">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                        <button type="button" class="btn" id="accept-quote">
+                            <i class="fas fa-check"></i> Accept Quote
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-save" id="floating-save" title="Save Progress">
+        <i class="fas fa-save"></i>
+    </div>
+
+    <script>
+        // Configuration
+        const TOTAL_STEPS = 6; // Update based on your actual steps
+        let currentStep = 1;
+        let formData = {
+            name: '',
+            email: '',
+            phone: '',
+            project_type: '',
+            // ... other fields
+        };
+        let quoteId = '';
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for existing session
+            fetch('/')
+                .then(response => response.text())
+                .then(() => {
+                    // Session is initialized
+                });
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initialize progress
+            updateProgress();
+        });
+
+        function setupEventListeners() {
+            // Real-time saving for input fields
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', function() {
+                    const field = this.id;
+                    formData[field] = this.value;
+                    autoSave();
+                });
+            });
+
+            // Floating save button
+            document.getElementById('floating-save').addEventListener('click', function() {
+                manualSave();
+            });
+
+            // Download quote button
+            document.getElementById('download-quote')?.addEventListener('click', function() {
+                generateQuote();
+            });
+
+            // Accept quote button
+            document.getElementById('accept-quote')?.addEventListener('click', function() {
+                acceptQuote();
+            });
+        }
+
+        function autoSave() {
+            // Debounce saving to prevent too many requests
+            if (this.saveTimeout) {
+                clearTimeout(this.saveTimeout);
+            }
+            
+            this.saveTimeout = setTimeout(() => {
+                saveProgress();
+            }, 1000);
+        }
+
+        function manualSave() {
+            const saveBtn = document.getElementById('floating-save');
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            saveProgress().then(() => {
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<i class="fas fa-check"></i>';
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<i class="fas fa-save"></i>';
+                }, 2000);
+            });
+        }
+
+        async function saveProgress() {
+            return fetch('/save_progress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    step: currentStep,
+                    answers: formData,
+                    current_step: currentStep
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!quoteId && data.quote_id) {
+                    quoteId = data.quote_id;
+                }
+            });
+        }
+
+        function nextStep(step) {
+            if (!validateStep(step)) {
+                return;
+            }
+            
+            // Animation: fade out current step
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            currentStepEl.classList.remove('active');
+            currentStepEl.classList.add('animate__animated', 'animate__fadeOut');
+            
+            // Update current step
+            currentStep = step + 1;
+            
+            // Special handling for certain steps
+            if (currentStep === TOTAL_STEPS) { // If summary step
+                updateSummary();
+            }
+            
+            // Animation: fade in next step
+            setTimeout(() => {
+                const nextStepEl = document.getElementById(`step-${currentStep}`);
+                nextStepEl.classList.add('active', 'animate__animated', 'animate__fadeIn');
+                updateProgress();
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 300);
+        }
+
+        function prevStep(step) {
+            // Animation: fade out current step
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            currentStepEl.classList.remove('active');
+            currentStepEl.classList.add('animate__animated', 'animate__fadeOut');
+            
+            // Update current step
+            currentStep = step - 1;
+            
+            // Animation: fade in previous step
+            setTimeout(() => {
+                const prevStepEl = document.getElementById(`step-${currentStep}`);
+                prevStepEl.classList.add('active', 'animate__animated', 'animate__fadeIn');
+                updateProgress();
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 300);
+        }
+
+        function updateProgress() {
+            const progressPercentage = (currentStep / TOTAL_STEPS) * 100;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+            document.getElementById('progress-percent').textContent = `${Math.round(progressPercentage)}%`;
+        }
+
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    return validatePersonalInfo();
+                case 2:
+                    return validateProjectType();
+                // Add validation for other steps
+                default:
+                    return true;
+            }
+        }
+
+        function validatePersonalInfo() {
+            let isValid = true;
+            
+            // Validate name
+            if (!formData.name || formData.name.trim() === '') {
+                document.getElementById('name').classList.add('error');
+                document.getElementById('name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('name').classList.remove('error');
+                document.getElementById('name-error').style.display = 'none';
+            }
+            
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!formData.email || !emailRegex.test(formData.email)) {
+                document.getElementById('email').classList.add('error');
+                document.getElementById('email-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('email').classList.remove('error');
+                document.getElementById('email-error').style.display = 'none';
+                
+                // Send resume link email
+                fetch('/send_resume_link', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: formData.email
+                    })
+                });
+            }
+            
+            if (!isValid) {
+                // Shake animation for errors
+                const formContainer = document.querySelector('.form-container');
+                formContainer.classList.add('animate__animated', 'animate__headShake');
+                setTimeout(() => {
+                    formContainer.classList.remove('animate__animated', 'animate__headShake');
+                }, 1000);
+            }
+            
+            return isValid;
+        }
+
+        function validateProjectType() {
+            if (!formData.project_type) {
+                document.getElementById('project-type-error').style.display = 'block';
+                
+                // Shake animation for error
+                const formContainer = document.querySelector('.form-container');
+                formContainer.classList.add('animate__animated', 'animate__headShake');
+                setTimeout(() => {
+                    formContainer.classList.remove('animate__animated', 'animate__headShake');
+                }, 1000);
+                
+                return false;
+            }
+            
+            document.getElementById('project-type-error').style.display = 'none';
+            return true;
+        }
+
+        function selectOption(element, field, value) {
+            // For radio-style options (single select)
+            if (field !== 'extras') {
+                // Remove selected class from all options in this group
+                const parent = element.parentElement;
+                const options = parent.querySelectorAll('.option-card');
+                options.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                element.classList.add('selected');
+                
+                // Update form data
+                formData[field] = value;
+            } 
+            // For checkbox-style options (multi-select)
+            else {
+                element.classList.toggle('selected');
+                
+                if (!formData.extras) {
+                    formData.extras = [];
+                }
+                
+                if (element.classList.contains('selected')) {
+                    if (!formData.extras.includes(value)) {
+                        formData.extras.push(value);
+                    }
+                } else {
+                    formData.extras = formData.extras.filter(extra => extra !== value);
+                }
+            }
+            
+            autoSave();
+        }
+
+        function updateSummary() {
+            // Update the summary view with all collected data
+            console.log("Updating summary with:", formData);
+        }
+
+        function generateQuote() {
+            fetch('/generate_quote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Open PDF in new tab
+                    window.open(data.pdf_url, '_blank');
+                }
+            });
+        }
+
+        function acceptQuote() {
+            // Implement quote acceptance logic
+            console.log("Quote accepted");
+        }
+    </script>
+</body>
+</html>
